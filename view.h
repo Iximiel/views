@@ -15,6 +15,13 @@ class View { // this is duplicated in PBC.h, this need to be uniformed!!!
 public:
   template <size_t NN = N, typename = std::enable_if_t<NN != dynamic_extent>>
   View(T *p) : ptr_(p), size_(N) {}
+  /*
+  // this ctor checks that the asked size IS the one specified in the
+  // template, but does not work
+  template <size_t NN = N, typename = std::enable_if_t<NN != dynamic_extent>>
+  View(T *p, size_t size) : View(p) {
+    static_assert(N == size, "Specified size does not match template");
+  }*/
   template <size_t NN = N, typename = std::enable_if_t<NN == dynamic_extent>>
   View(T *p, size_t size) : ptr_(p), size_(size) {}
   constexpr size_t size() const { return size_; }
