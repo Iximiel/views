@@ -16,8 +16,10 @@ public:
   mdView(T *p) : ptr_(p), sizeN_(N), sizeM_(M) {}
 
   //   constexpr size_t size() const { return size_; }
-  View<T> operator[](size_t i) { return View<T, M>(ptr_ + i * sizeM_); }
-  View<T> operator[](size_t i) const { return View<T, M>(ptr_ + i * sizeM_); }
+  View<T, M> operator[](size_t i) { return View<T, M>(ptr_ + i * sizeM_); }
+  View<T, M> operator[](size_t i) const {
+    return View<T, M>(ptr_ + i * sizeM_);
+  }
   //   T &at(size_t i) {
   //     if (i >= size_) {
   //       throw std::out_of_range("out of range");

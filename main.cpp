@@ -1,4 +1,5 @@
 #include "acomplexType.hpp"
+#include "mdview.h"
 #include "view.h"
 
 #include <array>
@@ -6,6 +7,7 @@
 #include <iostream>
 #include <vector>
 
+using view::mdView;
 using view::View;
 
 using i3 = AcomplexType<int, 3>;
@@ -65,9 +67,31 @@ bool testview_subarray(const std::array<int, 10> &arr, size_t sub,
   }
   return success;
 }
+
+///////////////MDVIEW
+template <size_t N, size_t M, typename T>
+bool mdtestview_fixed(const std::vector<T> &arr, mdView<T, N, M> view) {
+  std::cout << "testview_fixed\n";
+  bool success = true;
+
+  for (size_t i = 0; i < N; i++) {
+    for (size_t j = 0; j < M; j++) {
+      auto idx = i * M + j;
+      std::cout << idx << " (" << i << ", " << j << ") " << view[i][j] << " "
+                << arr[idx] << "\n";
+      if (view[i][j] != arr[idx]) {
+        success = false;
+      }
+    }
+  }
+  return success;
+}
+
 int main() {
+  std::cout << "#View\n";
+
   {
-    std::cout << "# with std::array<int,N> \n";
+    std::cout << "## with std::array<int,N> \n";
     std::array<int, 10> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     assert(testview_fixed(arr, {arr.data()}));
     assert(testview_subarray(arr, 4, {arr.data() + 4, 6}));
@@ -75,13 +99,13 @@ int main() {
   }
   ////
   {
-    std::cout << "# with std::vector<int> \n";
+    std::cout << "## with std::vector<int> \n";
     std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     assert(testview_fixed<3>(arr, {arr.data()}));
   }
 
   {
-    std::cout << "# with std::vector<AcomplexType> \n";
+    std::cout << "## with std::vector<AcomplexType> \n";
     std::vector<i3> arr = {{1, 2, 3},    {4, 5, 6},    {7, 8, 9},
                            {10, 11, 12}, {13, 14, 15}, {16, 17, 18},
                            {19, 20, 21}};
@@ -93,5 +117,12 @@ int main() {
     assert(testview_subarray(arr, 2, {arr.data() + 2, 4}));
   }
 
+  std::cout << "#mdView\n";
+  {
+    std::cout << "## with std::vector<int> \n";
+    std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto res = mdtestview_fixed<3, 4>(arr, {arr.data()});
+    assert(res);
+  }
   return 0;
 }
