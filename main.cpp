@@ -87,6 +87,18 @@ bool mdtestview_fixed(const std::vector<T> &arr, mdView<T, N, M> view) {
   return success;
 }
 
+template <size_t N, size_t M, typename T> void printView(mdView<T, N, M> view) {
+
+  for (size_t i = 0; i < N; i++) {
+    for (size_t j = 0; j < M; j++) {
+
+      std::cout << view[i][j] << " ";
+    }
+
+    std::cout << "\n";
+  }
+}
+
 int main() {
   std::cout << "#View\n";
 
@@ -121,6 +133,8 @@ int main() {
   {
     std::cout << "## with std::vector<int> \n";
     std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    printView<3, 4, int>({arr.data()});
+    printView<4, 3, int>({arr.data()});
     auto res = mdtestview_fixed<3, 4>(arr, {arr.data()});
     assert(res);
   }
