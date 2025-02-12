@@ -1,5 +1,8 @@
+#ifndef VIEW_H
+#define VIEW_H
 #include <cstddef>
 #include <limits>
+#include <stdexcept>
 #include <type_traits>
 
 namespace view {
@@ -17,13 +20,13 @@ public:
   constexpr size_t size() const { return size_; }
   T &operator[](size_t i) { return ptr_[i]; }
   const T &operator[](size_t i) const { return ptr_[i]; }
-  T &at[](size_t i) {
+  T &at(size_t i) {
     if (i >= size_) {
       throw std::out_of_range("out of range");
     }
     return ptr_[i];
   }
-  const T &at[](size_t i) const {
+  const T &at(size_t i) const {
     if (i >= size_) {
       throw std::out_of_range("out of range");
     }
@@ -31,3 +34,5 @@ public:
   }
 };
 } // namespace view
+
+#endif // VIEW_H
