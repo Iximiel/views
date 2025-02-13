@@ -22,7 +22,6 @@ public:
   View(T *p, size_t size) : View(p) {
     static_assert(N == size, "Specified size does not match template");
   }*/
-  template <size_t NN = N, typename = std::enable_if_t<NN == dynamic_extent>>
   View(T *p, size_t size) : ptr_(p), size_(size) {}
   constexpr size_t size() const { return size_; }
   T &operator[](size_t i) { return ptr_[i]; }
